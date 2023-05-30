@@ -1,8 +1,18 @@
 import pygame
 
-cellWidth = 10
-screenWidth = 1000
+cellWidth = 50
+screenWidth = 500
+numberOfCells = int(screenWidth / cellWidth)
+board = []
 
+def drawLines():
+  
+    for i in range(numberOfCells):
+        pygame.draw.line(frame, "black", (0, cellWidth * i), (screenWidth, cellWidth * i))
+
+    for i in range(numberOfCells):
+        pygame.draw.line(frame, "black", (cellWidth * i,0), (cellWidth * i, screenWidth))
+    pygame.display.flip()
 
 pygame.init()
 
@@ -18,6 +28,7 @@ while running:
 
     
     frame.fill("white")
+    drawLines()
     pygame.display.flip()
   
 
