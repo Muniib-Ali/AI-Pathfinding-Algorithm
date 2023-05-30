@@ -39,6 +39,19 @@ def drawLines():
         pygame.draw.line(frame, "black", (cellWidth * i,0), (cellWidth * i, screenWidth))
     pygame.display.flip()
 
+def createArray():
+
+    for i in range(numberOfCells):
+        board.append([])
+        for j in range(numberOfCells):
+           
+            if i == 0 or  i == (numberOfCells) - 1 or j == 0 or j == (numberOfCells) - 1:
+                board[i].append(Cell("black", 1 * i, 1 * j))
+
+            else:
+                board[i].append(Cell("white", 1 * i, 1 * j))
+
+
 pygame.init()
 
 frame = pygame.display.set_mode((screenWidth, screenWidth))
