@@ -5,6 +5,31 @@ screenWidth = 500
 numberOfCells = int(screenWidth / cellWidth)
 board = []
 
+
+class Cell:
+    def __init__(self, colour, x,y):
+        self.colour = colour
+        self.x = x
+        self.y = y
+
+    def makeGoal(self):
+        self.colour = "red"
+    
+    def clearColor(self):
+        self.colour = "white"
+    
+    def makeStart(self):
+        self.colour = "green"
+    
+    def makeWall(self):
+        self.colour  = "black"
+
+    def makeSearched(self):
+        self.colour = "grey"
+
+    def makeCanSearch(self):
+        self.colour = "yellow"
+        
 def drawLines():
   
     for i in range(numberOfCells):
