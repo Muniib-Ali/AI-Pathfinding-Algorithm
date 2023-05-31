@@ -6,6 +6,8 @@ numberOfCells = int(screenWidth / cellWidth)
 board = []
 start = []
 goal = []
+searched = []
+searchable = set()
 
 class Cell:
     def __init__(self, colour, x,y):
@@ -16,7 +18,7 @@ class Cell:
     def makeGoal(self):
         self.colour = "red"
     
-    def clearColor(self):
+    def clearColour(self):
         self.colour = "white"
     
     def makeStart(self):
@@ -82,12 +84,37 @@ def deleteCells():
         mouseY = mouseY - (mouseY % cellWidth)
 
         cell = board[int(mouseX / cellWidth)][int(mouseY / cellWidth)]
-        cell.clearColor()
+        cell.clearColour()
 
         if cell in start:
             start.clear()
         elif cell in goal:
             goal.clear()
+
+def getNeighbours(cell):
+    neighbours = []
+
+    if cell.x > 0:
+        neighbours.append(board[cell.x-1][cell.y])
+    
+    if cell.x < (numberOfCells - 1):
+        neighbours.append(board[cell.x+1][cell.y])
+
+    if cell.y < (numberOfCells - 1):
+        neighbours.append(board[cell.x][cell.y+1])
+
+    if cell.y > 0 :
+        neighbours.append(board[cell.x][cell.y-1])
+    
+    for neighbour in neighbours:
+        if neighbour not in searched and neighbour.colour != "black" and neighbour.colour != "red":
+            searchable.add(neighbour)
+            neighbour.makeSearchable()
+        elif neighbour.colour == "red":
+            searchable.clear()
+            return
+        
+
 
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
