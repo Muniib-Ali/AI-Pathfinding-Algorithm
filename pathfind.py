@@ -107,7 +107,7 @@ def getNeighbours(cell):
         neighbours.append(board[cell.x][cell.y-1])
     
     for neighbour in neighbours:
-        if neighbour not in searched and neighbour.colour != "black" and neighbour.colour != "red":
+        if neighbour not in searched and neighbour.colour != "black" and neighbour.colour != "red" and neighbour.colour != "green":
             searchable.add(neighbour)
             neighbour.makeSearchable()
         elif neighbour.colour == "red":
@@ -128,16 +128,38 @@ def compare(cell1, cell2):
         returnable = cell1
     return returnable
 
-def getShortest():
-    shortestCell = None
+def getClosest():
+    closestCell = None
     for cell in searchable:
-        if shortestCell == None:
-            shortestCell = cell
+        if closestCell == None:
+            closestCell = cell
         else:  
-                shortestCell = compare(shortestCell, cell)
+            closestCell = compare(closestCell, cell)
     
-    searchable.remove(shortestCell)
-    return shortestCell
+    searchable.remove(closestCell)
+    return closestCell
+
+def search(cell):
+    cell.makeSearched()
+    searched.append(cell)
+
+def bestFirstSearch():
+    if pygame.key.get_pressed()[pygame.K_SPACE] and start and goal:
+        getNeighbours(start[0])
+        while len(searchable) != 0:
+            running = True
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                     running = False
+                     break
+            
+            cell = getClosest()
+            search(cell)
+            getNeighbours(cell)
+            drawGrid()
+
+            if running == False:
+                break
 
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
@@ -154,3 +176,4 @@ while running:
     drawGrid()
     placeCells()
     deleteCells()
+    bestFirstSearch()
