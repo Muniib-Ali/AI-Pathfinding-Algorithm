@@ -82,7 +82,12 @@ def deleteCells():
         mouseY = mouseY - (mouseY % cellWidth)
 
         cell = board[int(mouseX / cellWidth)][int(mouseY / cellWidth)]
-        cell.clearColor() 
+        cell.clearColor()
+
+        if cell in start:
+            start.clear()
+        elif cell in goal:
+            goal.clear()
 
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
