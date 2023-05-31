@@ -113,8 +113,31 @@ def getNeighbours(cell):
         elif neighbour.colour == "red":
             searchable.clear()
             return
-        
 
+def compare(cell1, cell2):
+
+    target = goal[0]
+    returnable = None
+
+    comparable1 = abs(cell1.x - target.x) + abs(cell1.y - target.y)
+    comparable2 = abs(cell2.x - target.x) + abs(cell2.y - target.y)
+
+    if comparable1 > comparable2:
+        returnable = cell2
+    else:
+        returnable = cell1
+    return returnable
+
+def getShortest():
+    shortestCell = None
+    for cell in searchable:
+        if shortestCell == None:
+            shortestCell = cell
+        else:  
+                shortestCell = compare(shortestCell, cell)
+    
+    searchable.remove(shortestCell)
+    return shortestCell
 
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
