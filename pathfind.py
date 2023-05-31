@@ -73,7 +73,17 @@ def placeCells():
         
         elif cell not in goal and cell not in start:
             cell.makeWall()
-    
+
+def deleteCells():
+    if pygame.mouse.get_pressed()[2]: 
+
+        (mouseX, mouseY) = pygame.mouse.get_pos() 
+        mouseX = mouseX - (mouseX % cellWidth)
+        mouseY = mouseY - (mouseY % cellWidth)
+
+        cell = board[int(mouseX / cellWidth)][int(mouseY / cellWidth)]
+        cell.clearColor() 
+
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
 pygame.display.set_caption('Pathfinding Algorithm')
@@ -88,3 +98,4 @@ while running:
 
     drawGrid()
     placeCells()
+    deleteCells()
