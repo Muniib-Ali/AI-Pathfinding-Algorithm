@@ -151,15 +151,12 @@ def bestFirstSearch():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                      running = False
-                     break
+                     pygame.quit()
             
             cell = getClosest()
             search(cell)
             getNeighbours(cell)
             drawGrid()
-
-            if running == False:
-                break
 
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
