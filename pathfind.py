@@ -93,6 +93,7 @@ def deleteCells():
 
 def getNeighbours(cell):
     neighbours = []
+    found = False
 
     if cell.x > 0:
         neighbours.append(board[cell.x-1][cell.y])
@@ -111,8 +112,11 @@ def getNeighbours(cell):
             searchable.add(neighbour)
             neighbour.makeSearchable()
         elif neighbour.colour == "red":
-            searchable.clear()
-            return
+            found = True
+
+    if found == True:
+        searchable.clear()
+        return   
 
 def compare(cell1, cell2):
 
@@ -157,6 +161,7 @@ def bestFirstSearch():
             search(cell)
             getNeighbours(cell)
             drawGrid()
+            pygame.time.wait(100)
 
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
