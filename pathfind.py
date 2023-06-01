@@ -58,9 +58,9 @@ def drawGrid():
     pygame.display.flip()
 
 def placeCells():
-    if pygame.mouse.get_pressed()[0]:
-
-        (mouseX, mouseY) = pygame.mouse.get_pos() 
+    (mouseX, mouseY) = pygame.mouse.get_pos()
+     
+    if pygame.mouse.get_pressed()[0] and mouseX >= 0 and mouseX < screenWidth and mouseY >= 0 and mouseY < screenWidth:
         mouseX = mouseX - (mouseX % cellWidth)
         mouseY = mouseY - (mouseY % cellWidth)
         cell = board[int(mouseX / cellWidth)][int(mouseY / cellWidth)]
