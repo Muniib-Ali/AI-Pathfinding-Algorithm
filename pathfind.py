@@ -1,4 +1,5 @@
 import pygame
+import queue
 
 cellWidth = 10
 screenWidth = 1000
@@ -8,6 +9,7 @@ start = []
 goal = []
 searched = []
 searchable = set()
+bfsSearchable = queue.Queue()
 
 class Cell:
     def __init__(self, colour, x,y):
@@ -110,12 +112,15 @@ def getNeighbours(cell):
     for neighbour in neighbours:
         if neighbour not in searched and neighbour.colour != "black" and neighbour.colour != "red" and neighbour.colour != "green":
             searchable.add(neighbour)
+            bfsSearchable.put(neighbour)
             neighbour.makeSearchable()
         elif neighbour.colour == "red":
             found = True
 
     if found == True:
         searchable.clear()
+        bfsSearchable.queue.clear()
+
         return   
 
 def compare(cell1, cell2):
@@ -161,7 +166,24 @@ def bestFirstSearch():
             search(cell)
             getNeighbours(cell)
             drawGrid()
-            pygame.time.wait(100)
+            pygame.time.wait(20)
+
+def breadthFirstSearch():
+    if pygame.key.get_pressed()[pygame.K_SPACE] and start and goal:
+        getNeighbours(start[0])
+        while not bfsSearchable.empty():
+            running = True
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                     running = False
+                     pygame.quit()
+            
+            
+            cell = bfsSearchable.get()
+            search(cell)
+            getNeighbours(cell)
+            drawGrid()
+            
 
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
@@ -178,4 +200,4 @@ while running:
     drawGrid()
     placeCells()
     deleteCells()
-    bestFirstSearch()
+    breadthFirstSearch()
