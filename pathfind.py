@@ -1,5 +1,5 @@
 import pygame
-import queue
+from collections import deque
 
 cellWidth = 10
 screenWidth = 1000
@@ -9,7 +9,7 @@ start = []
 goal = []
 searched = []
 searchable = set()
-bfsSearchable = queue.Queue()
+bfsSearchable = deque()
 
 class Cell:
     def __init__(self, colour, x,y):
@@ -110,16 +110,16 @@ def getNeighbours(cell):
         neighbours.append(board[cell.x][cell.y-1])
     
     for neighbour in neighbours:
-        if neighbour not in searched and neighbour.colour != "black" and neighbour.colour != "red" and neighbour.colour != "green":
+        if neighbour not in searched and neighbour not in bfsSearchable and neighbour.colour != "black" and neighbour.colour != "red" and neighbour.colour != "green":
             searchable.add(neighbour)
-            bfsSearchable.put(neighbour)
+            bfsSearchable.append(neighbour)
             neighbour.makeSearchable()
         elif neighbour.colour == "red":
             found = True
 
     if found == True:
         searchable.clear()
-        bfsSearchable.queue.clear()
+        bfsSearchable.clear()
 
         return   
 
@@ -166,12 +166,11 @@ def bestFirstSearch():
             search(cell)
             getNeighbours(cell)
             drawGrid()
-            pygame.time.wait(20)
 
 def breadthFirstSearch():
     if pygame.key.get_pressed()[pygame.K_SPACE] and start and goal:
         getNeighbours(start[0])
-        while not bfsSearchable.empty():
+        while len(bfsSearchable) != 0:
             running = True
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -179,7 +178,7 @@ def breadthFirstSearch():
                      pygame.quit()
             
             
-            cell = bfsSearchable.get()
+            cell = bfsSearchable.popleft()
             search(cell)
             getNeighbours(cell)
             drawGrid()
