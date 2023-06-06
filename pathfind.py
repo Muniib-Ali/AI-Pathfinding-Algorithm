@@ -78,9 +78,13 @@ def drawButtonBorder(width, height, y, search):
             global bestSearch
             bestSearch = True
 
-def drawText(text, height):
+def drawBorder(width, height, y, search):
+    pygame.draw.rect(frame, cyan, (screenWidth/2 - (width/2), y - (height/2), width, height))
+    pygame.draw.rect(frame, "black", (screenWidth/2 - (width/2) + 10, y - (height/2) + 5, width - 20, height - 10))
+
+def drawText(text, height, colour):
     
-    text = font.render(text, True, cyan)
+    text = font.render(text, True, colour)
     text_rect = text.get_rect(center = (screenWidth/2, height))
     frame.blit(text, text_rect)
     
@@ -93,10 +97,18 @@ def drawHomepage():
     frame.fill(homePageColour)
 
     drawButtonBorder(500, 40, 200, "breadthSearch")
-    drawText("Breadth First Search", 200)
+    drawText("Run Breadth First Search", 200, cyan)
 
     drawButtonBorder(500, 40, 300, "bestSearch")
-    drawText("Best First Search", 300)
+    drawText("Run Best First Search", 300, cyan)
+
+    drawText("Controls:", 400, "red")
+
+    drawText("Left Click: Place", 450, "red")
+    drawText("Right Click: Delete", 500, "red")
+    drawText("Space Bar: Run Algorithm", 550, "red")
+
+
 
     pygame.display.flip()
 
@@ -220,7 +232,6 @@ def breadthFirstSearch():
             getNeighbours(cell)
             drawGrid()
             
-
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
 pygame.display.set_caption('Pathfinding Algorithm')
