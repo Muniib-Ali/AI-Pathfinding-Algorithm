@@ -1,9 +1,10 @@
-# Pathfinding-Algorithm
+# AI Pathfinding-Algorithm
 
 ---
 ##### Development tools used:
 
-Python, Pygame
+- Python
+- Pygame
 
 ### Description:
 
@@ -19,8 +20,8 @@ Step 3. Run pathfind.py
 
 ### Controls
 
-Left mouse-click to place cells
+* Left mouse-click to place cells
 
-Right mouse-click to delete cells
+* Right mouse-click to delete cells
 
-Spacebar to run the algorithm.(Start and Goal node must be placed)
+* Spacebar to run the algorithm.(Start and Goal node must be placed)
