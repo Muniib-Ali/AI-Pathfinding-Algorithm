@@ -90,7 +90,7 @@ def drawHomepage():
         if event.type == pygame.QUIT:
             pygame.quit()
 
-    frame.fill("black")
+    frame.fill(homePageColour)
 
     drawButtonBorder(500, 40, 200, "breadthSearch")
     drawText("Breadth First Search", 200)
@@ -198,10 +198,8 @@ def bestFirstSearch():
     if pygame.key.get_pressed()[pygame.K_SPACE] and start and goal:
         getNeighbours(start[0])
         while len(searchable) != 0:
-            running = True
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                     running = False
                      pygame.quit()
             
             cell = getClosest()
@@ -213,12 +211,9 @@ def breadthFirstSearch():
     if pygame.key.get_pressed()[pygame.K_SPACE] and start and goal:
         getNeighbours(start[0])
         while len(bfsSearchable) != 0:
-            running = True
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                     running = False
                      pygame.quit()
-            
             
             cell = bfsSearchable.popleft()
             search(cell)
