@@ -1,14 +1,20 @@
 import pygame
 from collections import deque
 
+pygame.font.init()
 cellWidth = 10
 screenWidth = 1000
 numberOfCells = int(screenWidth / cellWidth)
+cyan = (0, 255, 255)
+homePageColour = (0,0,0)
+font =  pygame.font.SysFont(None, 40)
+breadthSearch = False
+bestSearch = False
 board = []
 start = []
 goal = []
 searched = []
-searchable = set()
+searchable = []
 bfsSearchable = deque()
 
 class Cell:
@@ -58,6 +64,42 @@ def drawGrid():
         pygame.draw.line(frame, "black", (0, cellWidth * i), (screenWidth, cellWidth * i))
 
     pygame.display.flip()
+
+def drawButtonBorder(width, height, y, search):
+    pygame.draw.rect(frame, cyan, (screenWidth/2 - (width/2), y - (height/2), width, height))
+    pygame.draw.rect(frame, "black", (screenWidth/2 - (width/2) + 10, y - (height/2) + 5, width - 20, height - 10))
+
+    (mouseX, mouseY) = pygame.mouse.get_pos()
+    if pygame.mouse.get_pressed()[0] and mouseX > screenWidth/2 - (width/2) and mouseX < screenWidth/2 + (width/2) and mouseY >  y - (height/2) and mouseY < y + (height/2):
+        if search == "breadthSearch":
+            global breadthSearch
+            breadthSearch = True
+        elif search == "bestSearch":
+            global bestSearch
+            bestSearch = True
+
+def drawText(text, height):
+    
+    text = font.render(text, True, cyan)
+    text_rect = text.get_rect(center = (screenWidth/2, height))
+    frame.blit(text, text_rect)
+    
+
+def drawHomepage():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
+    frame.fill("black")
+
+    drawButtonBorder(500, 40, 200, "breadthSearch")
+    drawText("Breadth First Search", 200)
+
+    drawButtonBorder(500, 40, 300, "bestSearch")
+    drawText("Best First Search", 300)
+
+    pygame.display.flip()
+
 
 def placeCells():
     (mouseX, mouseY) = pygame.mouse.get_pos()
@@ -111,7 +153,7 @@ def getNeighbours(cell):
     
     for neighbour in neighbours:
         if neighbour not in searched and neighbour not in bfsSearchable and neighbour.colour != "black" and neighbour.colour != "red" and neighbour.colour != "green":
-            searchable.add(neighbour)
+            searchable.append(neighbour)
             bfsSearchable.append(neighbour)
             neighbour.makeSearchable()
         elif neighbour.colour == "red":
@@ -196,7 +238,14 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    while not breadthSearch and not bestSearch:
+        drawHomepage()
+
     drawGrid()
     placeCells()
     deleteCells()
-    breadthFirstSearch()
+
+    if bestSearch:
+        bestFirstSearch()
+    elif breadthSearch:
+        breadthFirstSearch()
