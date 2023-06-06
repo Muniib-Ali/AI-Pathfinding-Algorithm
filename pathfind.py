@@ -10,6 +10,7 @@ homePageColour = (0,0,0)
 font =  pygame.font.SysFont(None, 40)
 breadthSearch = False
 bestSearch = False
+completed = False
 board = []
 start = []
 goal = []
@@ -63,6 +64,10 @@ def drawGrid():
         pygame.draw.line(frame, "black", (cellWidth * i,0), (cellWidth * i, screenWidth))
         pygame.draw.line(frame, "black", (0, cellWidth * i), (screenWidth, cellWidth * i))
 
+    if completed:
+        drawButtonBorder(500, 40, screenWidth/2, "Reset")
+        drawText("Reset", screenWidth/2, cyan)
+
     pygame.display.flip()
 
 def drawButtonBorder(width, height, y, search):
@@ -77,7 +82,15 @@ def drawButtonBorder(width, height, y, search):
         elif search == "bestSearch":
             global bestSearch
             bestSearch = True
-
+        elif search == "Reset":
+            start.clear()
+            goal.clear()
+            bestSearch = False
+            breadthSearch =False
+            global completed
+            completed = False
+            board.clear()
+            fillGrid()
 def drawBorder(width, height, y, search):
     pygame.draw.rect(frame, cyan, (screenWidth/2 - (width/2), y - (height/2), width, height))
     pygame.draw.rect(frame, "black", (screenWidth/2 - (width/2) + 10, y - (height/2) + 5, width - 20, height - 10))
@@ -174,7 +187,8 @@ def getNeighbours(cell):
     if found == True:
         searchable.clear()
         bfsSearchable.clear()
-
+        global completed
+        completed = True
         return   
 
 def compare(cell1, cell2):
@@ -236,8 +250,8 @@ pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
 pygame.display.set_caption('Pathfinding Algorithm')
 running = True
-fillGrid()
 
+fillGrid()
 while running:
 
     for event in pygame.event.get():
