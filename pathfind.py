@@ -18,6 +18,7 @@ searched = []
 searchable = []
 bfsSearchable = deque()
 
+#Class definition for each individual cell
 class Cell:
     def __init__(self, colour, x,y):
         self.colour = colour
@@ -41,7 +42,8 @@ class Cell:
 
     def makeSearchable(self):
         self.colour = "yellow"
-        
+
+#Fills the 2d array with individual cells      
 def fillGrid():
     for i in range(numberOfCells):
         board.append([])
@@ -53,6 +55,7 @@ def fillGrid():
             else:
                 board[i].append(Cell("white", 1 * i, 1 * j))
 
+#Called every frame and draws the grid and the reset button if the algorithm runs
 def drawGrid():
     frame.fill("white")
     
@@ -70,6 +73,7 @@ def drawGrid():
 
     pygame.display.flip()
 
+#Draws buttons
 def drawButtonBorder(width, height, y, search):
     pygame.draw.rect(frame, cyan, (screenWidth/2 - (width/2), y - (height/2), width, height))
     pygame.draw.rect(frame, "black", (screenWidth/2 - (width/2) + 10, y - (height/2) + 5, width - 20, height - 10))
@@ -91,17 +95,19 @@ def drawButtonBorder(width, height, y, search):
             completed = False
             board.clear()
             fillGrid()
+
+#Extra drawing for buttons
 def drawBorder(width, height, y, search):
     pygame.draw.rect(frame, cyan, (screenWidth/2 - (width/2), y - (height/2), width, height))
     pygame.draw.rect(frame, "black", (screenWidth/2 - (width/2) + 10, y - (height/2) + 5, width - 20, height - 10))
 
+#Functions to draw text
 def drawText(text, height, colour):
-    
     text = font.render(text, True, colour)
     text_rect = text.get_rect(center = (screenWidth/2, height))
     frame.blit(text, text_rect)
-    
 
+#Draws the home page and shows buttons to select search methods
 def drawHomepage():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -121,11 +127,9 @@ def drawHomepage():
     drawText("Right Click: Delete", 500, "red")
     drawText("Space Bar: Run Algorithm", 550, "red")
 
-
-
     pygame.display.flip()
 
-
+#Places new cells where the user presses
 def placeCells():
     (mouseX, mouseY) = pygame.mouse.get_pos()
 
@@ -145,6 +149,7 @@ def placeCells():
         elif cell not in goal and cell not in start:
             cell.makeWall()
 
+#Deletes cells where the user right clicks
 def deleteCells():
     (mouseX, mouseY) = pygame.mouse.get_pos()
 
@@ -160,6 +165,7 @@ def deleteCells():
         elif cell in goal:
             goal.clear()
 
+#Adds neighbours of specified cell to the searchable array
 def getNeighbours(cell):
     neighbours = []
     found = False
@@ -191,8 +197,8 @@ def getNeighbours(cell):
         completed = True
         return   
 
+#Heuristic that compares to specified cells and returns the cell that closer to the goal
 def compare(cell1, cell2):
-
     target = goal[0]
     returnable = None
 
@@ -205,6 +211,7 @@ def compare(cell1, cell2):
         returnable = cell1
     return returnable
 
+#Returns the cell thats closest to the goal
 def getClosest():
     closestCell = None
     for cell in searchable:
@@ -216,10 +223,12 @@ def getClosest():
     searchable.remove(closestCell)
     return closestCell
 
+#Makes cell searched
 def search(cell):
     cell.makeSearched()
     searched.append(cell)
 
+#Best first search algorithm
 def bestFirstSearch():
     if pygame.key.get_pressed()[pygame.K_SPACE] and start and goal:
         getNeighbours(start[0])
@@ -233,6 +242,7 @@ def bestFirstSearch():
             getNeighbours(cell)
             drawGrid()
 
+#Breadth first search algorithm
 def breadthFirstSearch():
     if pygame.key.get_pressed()[pygame.K_SPACE] and start and goal:
         getNeighbours(start[0])
