@@ -8,7 +8,7 @@
 
 ### Description:
 
-AI pathfinding tool created using pygame that implements the Best-first search and Breadth-first search path finding methods. Black cells serve as barriers and surround the perimeter of the frame, further barriers can be placed after the start and end goal cells have been placed. The start cell is green and the target cell is red. The Best-first search method uses Manhattan distance as it's heuristic.
+AI pathfinding tool created using pygame that implements the Best-first search and Breadth-first search path finding methods. Black cells serve as barriers and surround the perimeter of the frame, further barriers can be placed after the start and end goal cells have been placed. The start cell is green and the target cell is red. If a path is found the shortest route is highlighted in orange. The Best-first search method uses Manhattan distance as it's heuristic.
 
 ### How to Set up our Project
 
