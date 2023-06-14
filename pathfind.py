@@ -24,6 +24,7 @@ class Cell:
         self.colour = colour
         self.x = x
         self.y = y
+        self.previous = None
 
     def makeGoal(self):
         self.colour = "red"
@@ -42,6 +43,11 @@ class Cell:
 
     def makeSearchable(self):
         self.colour = "yellow"
+
+    def makePath(self):
+        self.colour = "orange"
+    def setPrevious(self,cell):
+        self.previous = cell
 
 #Fills the 2d array with individual cells      
 def fillGrid():
@@ -187,7 +193,10 @@ def getNeighbours(cell):
             searchable.append(neighbour)
             bfsSearchable.append(neighbour)
             neighbour.makeSearchable()
+            neighbour.setPrevious(cell)
         elif neighbour.colour == "red":
+            goalCell = goal[0]
+            goalCell.setPrevious(cell)
             found = True
 
     if found == True:
@@ -242,6 +251,8 @@ def bestFirstSearch():
             getNeighbours(cell)
             drawGrid()
 
+    if completed == True:
+        showRoute()
 #Breadth first search algorithm
 def breadthFirstSearch():
     if pygame.key.get_pressed()[pygame.K_SPACE] and start and goal:
@@ -255,7 +266,19 @@ def breadthFirstSearch():
             search(cell)
             getNeighbours(cell)
             drawGrid()
-            
+    
+    if completed == True:
+        showRoute()
+
+def showRoute():
+    startCell = start[0]
+    previousCell = goal[0]
+    previousCell = previousCell.previous
+
+    while previousCell != None and previousCell != startCell:
+        previousCell.makePath()
+        previousCell = previousCell.previous
+
 pygame.init()
 frame = pygame.display.set_mode((screenWidth, screenWidth))
 pygame.display.set_caption('Pathfinding Algorithm')
